@@ -1,1 +1,399 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Keindahan Bertatahkan Mutiara · Kilauan Ungu Mengalir</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold1:#d6b98a;
+      --gold2:#f5e3b5;
+      --purple1:#4b2c54;
+      --purple2:#7e4a7c;
+      --accent:#633b68;
+      --bg-dark:#100814;
+    }
+
+    html {
+      background-color:var(--bg-dark);
+    }
+    html, body {
+      margin:0; padding:0; height:100%;
+      font-family:"Noto Serif SC", serif;
+      color:#333;
+      overflow:hidden;
+    }
+    body {
+      background-color: transparent;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .background {
+      position:fixed; inset:0;
+      z-index:-2;
+      background-image:
+        linear-gradient(120deg, rgba(120,80,140,0.35), rgba(40,20,60,0.7)),
+        url('./bg.jpg');
+      background-size:cover;
+      background-position:center;
+      filter:brightness(1.2) saturate(1.2);
+      animation:bgMove 40s ease-in-out infinite alternate;
+    }
+    @keyframes bgMove {
+      0% { transform:scale(1); }
+      50% { transform:scale(1.05) translate(-10px,10px); }
+      100% { transform:scale(1); }
+    }
+
+    .frame {
+      position:fixed; inset:0; pointer-events:none;
+      z-index:-1;
+    }
+    .frame svg {
+      width:100%; height:100%; opacity:0.4;
+      animation:float 10s ease-in-out infinite alternate;
+    }
+    @keyframes float {
+      0%,100% { transform:scale(1); opacity:0.3; }
+      50% { transform:scale(1.02); opacity:0.5; }
+    }
+
+    .scroll-intro {
+      position:fixed;
+      inset:0;
+      background:rgba(16,8,20,0.9);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      z-index:100;
+      color:white;
+      text-align:center;
+      transition:opacity 1s ease, visibility 1s ease;
+      font-family:"ZCOOL XiaoWei", serif;
+    }
+    .scroll-intro.hidden {
+      opacity:0;
+      visibility:hidden;
+    }
+    .scroll-box {
+      border:3px double rgba(255,215,180,0.6);
+      background:linear-gradient(180deg, rgba(70,40,90,0.9), rgba(30,15,45,0.9));
+      padding:2rem 3rem;
+      border-radius:20px;
+      box-shadow:0 0 30px rgba(255,230,180,0.2);
+      animation:scrollOpen 3s ease forwards;
+      max-width:90%;
+    }
+    @keyframes scrollOpen {
+      0% { transform:scaleY(0.05); opacity:0; }
+      100% { transform:scaleY(1); opacity:1; }
+    }
+    .scroll-box h1 {
+      font-size:2.4rem;
+      margin:0 0 1rem;
+      background:linear-gradient(90deg,#e7d3a5,#fff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:0 0 15px rgba(255,255,255,0.3);
+    }
+    .scroll-box p {
+      font-size:1.2rem;
+      line-height:1.8;
+      margin:0.5em 0;
+      color:#f2e9d8;
+    }
+    .scroll-btn {
+      margin-top:1.5rem;
+      background:linear-gradient(90deg, var(--gold1), var(--gold2));
+      border:none;
+      color:#4b2c2c;
+      font-family:"ZCOOL XiaoWei";
+      border-radius:10px;
+      padding:0.6em 1.5em;
+      cursor:pointer;
+      font-size:1.1rem;
+      transition:all 0.4s;
+    }
+    .scroll-btn:hover {
+      transform:scale(1.1);
+      box-shadow:0 0 15px rgba(255,255,255,0.5);
+    }
+
+    header {
+      text-align:center;
+      padding:clamp(1rem,3vw,2rem);
+      background:linear-gradient(90deg, var(--purple1), var(--purple2));
+      color:white;
+      position:relative;
+      border-bottom:3px double rgba(255,255,255,0.4);
+      flex-shrink:0;
+      overflow:hidden;
+    }
+    header::after {
+      content:"";
+      position:absolute; top:0; left:-50%;
+      width:50%; height:100%;
+      background:linear-gradient(120deg, rgba(255,255,255,0.35), transparent);
+      transform:skewX(-20deg);
+      animation:shine 6s linear infinite;
+    }
+    @keyframes shine {
+      0%{left:-60%;}
+      50%{left:120%;}
+      100%{left:-60%;}
+    }
+
+    header h1 {
+      font-family:"ZCOOL XiaoWei", serif;
+      font-size:clamp(1.8rem,3.2vw,3rem);
+      margin:0;
+      text-shadow:0 0 15px rgba(255,255,255,0.6);
+      letter-spacing:2px;
+    }
+    header h2 {
+      font-size:clamp(1rem,1.8vw,1.3rem);
+      margin:0.3em 0 0;
+      color:#f5e3c8;
+    }
+
+    main {
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow-y:auto;
+      padding:1.5rem;
+    }
+    .panel {
+      width:min(90%,900px);
+      background:rgba(255,255,255,0.9);
+      border-radius:20px;
+      padding:clamp(1rem,2vw,2rem);
+      box-shadow:0 10px 25px rgba(0,0,0,0.15);
+      border:1px solid rgba(210,170,120,0.25);
+      text-align:justify;
+      display:none;
+      animation:fadeIn 0.8s ease;
+    }
+    .panel.active { display:block; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(15px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    footer {
+      text-align:center;
+      padding:1rem;
+      background:rgba(255,255,255,0.9);
+      border-top:2px double rgba(200,160,100,0.3);
+      flex-shrink:0;
+    }
+
+    button {
+      background:linear-gradient(90deg, var(--gold1), var(--gold2));
+      border:none;
+      color:#452c24;
+      font-family:"ZCOOL XiaoWei";
+      border-radius:10px;
+      padding:0.6em 1.2em;
+      margin:0.4em;
+      cursor:pointer;
+      transition:all 0.3s;
+    }
+    button:hover { transform:scale(1.05); }
+
+    input[type="number"] {
+      width:60px; text-align:center; border:1px solid #ccc;
+      border-radius:6px; padding:0.4em;
+    }
+
+    .music-btn {
+      position: fixed;
+      top: 15px; right: 15px;
+      width: 45px; height: 45px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      display:flex; justify-content:center; align-items:center;
+      cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: all 0.3s; border:none; font-size:1.4rem; z-index:10;
+    }
+    .music-btn:hover { transform: scale(1.1); }
+  </style>
+</head>
+
+<body>
+  <div class="background"></div>
+  <div class="frame">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e6c36b"/>
+          <stop offset="100%" stop-color="#b27f4f"/>
+        </linearGradient>
+      </defs>
+      <rect x="20" y="20" width="1160" height="760" rx="40" ry="40"
+        stroke="url(#grad)" stroke-width="8" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="scroll-intro" id="scrollIntro">
+    <div class="scroll-box">
+      <h1 style="font-size: 28px;">"Permulaan Mimpi Bertatahkan Mutiara · Cahaya Seribu Tahun"</h1>
+      <p>Malam gelap disinari lentera</p>
+      <p>Tampak bersinar ibu-di-cengkerang</p>
+      <p>Seninya halus bertatah mutiara</p>
+      <p>Cahaya berkilau pandangan tak kurang</p>
+      <button class="scroll-btn" id="startBtn" style="font-weight: bold;">Buka Babak, Masuk ke Alam Bertatahkan Mutiara</button>
+    </div>
+  </div>
+
+  <button type="button" class="music-btn" id="musicBtn" aria-label="播放音乐">🎵</button>
+  <audio id="bgm" loop>
+    <source src="gufeng.mp3" type="audio/mpeg">
+  </audio>
+
+  <header>
+    <h1>中华非遗文化：螺钿</h1>
+    <h2>Warisan Budaya Bukan Kebendaan China：Bertatahkan Mutiara</h2>
+  </header>
+
+  <main> <div class="panel active" id="page1"> <h2>Apakah itu LUO DIAN?</h2> <p>Bertatahkan Mutiara (Cina: 螺钿, luódian) merujuk kepada teknik seni hiasan di mana kepingan nipis kulit kerang mutiara (dikenali sebagai ibu mutiara) dipotong, dibentuk, dan dilekatkan pada permukaan sesuatu objek, terutamanya kayu atau lakuer untuk menghasilkan corak atau reka bentuk yang berkilauan.</p> <p>kebudayaan ini sering digunakan untuk menghiasi perabot, alat muzik dan barangan lakuer, serta dipuji sebagai "Seni Cahaya dan Bayangan yang Membeku".</p> </div> <div class="panel" id="page2"> <h2>Sejarah dan Asal-Usul</h2> <p>Teknik Bertatahkan Mutiara dipercayai berasal dari China, dengan sejarah yang menjangkau lebih dari seribu tahun,teknik ini berkembang pesat terutamanya semasa dinasti Tang (abad ke-7 hingga ke-10) dan seterusnya.</p> <p>Seni ini kemudiannya merebak ke negara-negara Asia Timur yang lain seperti Jepun, Korea, dan juga ke rantau Asia Tenggara.</p> </div> <div class="panel" id="page3"> <h2>Kepentingan dan Nilai</h2> <p>Bertatahkan Mutiara dihargai kerana ketelitian dan kesukaran dalam pembuatannya. Setiap kepingan mutiara perlu dipotong dan dipasang dengan tepat oleh tukang yang mahir. Ia melambangkan kemewahan, kekayaan, dan keanggunan kerana bahan utamanya berasal dari laut dan sering dikaitkan dengan permata.</p> <P>Keindahan Bertatahkan Mutiara terletak pada aliran cahaya dan tekstur yang halus. Ia bukan sahaja satu kemahiran teknikal, malah ia adalah satu budaya. Sejak turun-temurun, para cendekiawan dan golongan bangsawan menganggap barangan bertatahkan mutiara sebagai harta yang bernilai untuk koleksi peribadi mereka.</p> </div>
+    <div class="panel" id="page4">
+      <div style="display:flex; justify-content:center; margin:1.0rem 0;">
+        <video id="luodianVideo" width="800" height="550" muted playsinline controls
+          style="border-radius:10px; box-shadow:0 0 20px rgba(0,0,0,0.3);">
+          <source src="luodian.mp4" type="video/mp4">
+        </video>
+      </div>
+      <h2>Cara membuat Bertatahkan Mutiara</h2>
+      <p>Langkah 1:Pemilihan Bahan Baku</p>
+      <p>Langkah 2:Perekaan Corak dan Lakaran</p>
+      <p>Langkah 3:Memotong Kepingan Mutiara</p>
+      <p>Langkah 4:Mengisar dan Mengasah Kepingan</p>
+      <p>Langkah 5:Melukis Lakuer dan Menyediakan Tapak</p>
+      <p>Langkah 6:Proses Bertatahkan</p>
+      <p>Langkah 7:Mengisi dengan Lakuer</p>
+      <p>Langkah 8:Menggilap dan Menyelesaikan</p>
+      <p>Langkah 9:Mengukir Perincian</p>
+      <p><em>—— “人事有代谢，往来成古今。"Peristiwa manusia sentiasa berubah, Yang datang dan pergi menjadi sejarah abadi.”</em></p>
+    </div>
+	
+	<div class="panel" id="page5">
+	<h2>Hasil Karya</h2>
+	<p>Beberapa hasil karya indah Bertatahkan Mutiara:</p>
+
+  
+	<div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+    <img src="Karya 1.jpg" alt="Karya 1" class="preview-img" style="width:260px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.25); cursor:pointer;">
+    <img src="Karya 2.jpg" alt="Karya 2" class="preview-img" style="width:260px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.25); cursor:pointer;">
+    <img src="Karya 3.jpg" alt="Karya 3" class="preview-img" style="width:260px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.25); cursor:pointer;">
+	<p>Tekan Gambar Untuk Melihat Gambar</p>
+</div>
+
+<!-- 预览弹出层 -->
+<div id="imageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:999;">
+  <img id="modalImg" src="" style="max-width:90%; max-height:90%; border-radius:15px; box-shadow:0 0 25px rgba(255,255,255,0.3);">
+</div>
+
+  </main>
+
+  <footer>
+    <button id="prevBtn">Muka Surat Hadapan</button>
+    <button id="nextBtn">Muka Surat seterusnya</button>
+    <input type="number" id="pageInput" min="1" max="5" placeholder="页码">
+    <button id="goBtn">Pilih Muka Surat</button>
+    <p id="pageIndicator">Muka Surat Sekarang：1 / 5</p>
+  </footer>
+
+  <script>
+    const music = document.getElementById("bgm");
+    const musicBtn = document.getElementById("musicBtn");
+    let playing = false;
+
+    async function toggleMusic() {
+      if (!playing) {
+        try {
+          await music.play();
+          playing = true;
+          musicBtn.textContent = "🔇";
+        } catch (err) {
+          console.warn("音乐播放失败，等待用户交互。", err);
+        }
+      } else {
+        music.pause();
+        playing = false;
+        musicBtn.textContent = "🎵";
+      }
+    }
+    musicBtn.addEventListener("click", toggleMusic);
+
+    const scrollIntro = document.getElementById("scrollIntro");
+    const startBtn = document.getElementById("startBtn");
+    startBtn.addEventListener("click", () => {
+      scrollIntro.classList.add("hidden");
+      if (!playing) toggleMusic();
+    });
+
+    let currentPage = 1;
+    const totalPages = 5;
+
+    function showPage(num) {
+      if (isNaN(num) || num < 1 || num > totalPages) return;
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page${num}`).classList.add('active');
+      document.getElementById("pageIndicator").textContent = `Muka Surat Sekarang：${num} / ${totalPages}`;
+      currentPage = num;
+
+      // === 控制第4页视频播放 ===
+      const video = document.getElementById("luodianVideo");
+      if (video) {
+        if (num === 4) {
+          video.muted = true;
+          video.play();
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+      }
+    }
+
+    document.getElementById('prevBtn').addEventListener('click',()=>{ if(currentPage>1) showPage(currentPage-1); });
+    document.getElementById('nextBtn').addEventListener('click',()=>{ if(currentPage<totalPages) showPage(currentPage+1); });
+    document.getElementById('goBtn').addEventListener('click',()=>{
+      const val=parseInt(document.getElementById("pageInput").value,10);
+      if(val>=1 && val<=totalPages){showPage(val);}else{alert("Sila mengisi Muka Surat！");}
+    });
+	
+	// === 点击图片放大预览 ===
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImg');
+const imgs = document.querySelectorAll('.preview-img');
+
+imgs.forEach(img => {
+  img.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    modalImg.src = img.src;
+  });
+});
+
+// 点击遮罩层关闭
+modal.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// 按 ESC 键关闭
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    modal.style.display = 'none';
+  }
+});
+
+  </script>
+</body>
+</html>
